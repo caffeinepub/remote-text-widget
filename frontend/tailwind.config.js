@@ -16,7 +16,8 @@ export default {
     },
     extend: {
       fontFamily: {
-        sans: ['Space Grotesk', 'Inter', 'system-ui', 'sans-serif'],
+        sans: ['Nunito', 'Quicksand', 'system-ui', 'sans-serif'],
+        display: ['Quicksand', 'Nunito', 'system-ui', 'sans-serif'],
         mono: ['JetBrains Mono', 'Fira Code', 'monospace'],
       },
       colors: {
@@ -26,8 +27,11 @@ export default {
         background: 'oklch(var(--background))',
         foreground: 'oklch(var(--foreground))',
         surface: 'oklch(var(--surface))',
-        neon: 'oklch(var(--neon) / <alpha-value>)',
-        electric: 'oklch(var(--electric) / <alpha-value>)',
+        'pastel-mint': 'oklch(var(--pastel-mint) / <alpha-value>)',
+        'pastel-pink': 'oklch(var(--pastel-pink) / <alpha-value>)',
+        'pastel-lavender': 'oklch(var(--pastel-lavender) / <alpha-value>)',
+        'pastel-peach': 'oklch(var(--pastel-peach) / <alpha-value>)',
+        'pastel-sky': 'oklch(var(--pastel-sky) / <alpha-value>)',
         widget: 'oklch(var(--widget-bg))',
         'widget-surface': 'oklch(var(--widget-surface))',
         primary: {
@@ -78,15 +82,17 @@ export default {
       },
       borderRadius: {
         lg: 'var(--radius)',
-        md: 'calc(var(--radius) - 2px)',
-        sm: 'calc(var(--radius) - 4px)',
+        md: 'calc(var(--radius) - 4px)',
+        sm: 'calc(var(--radius) - 8px)',
         xl: 'calc(var(--radius) + 4px)',
         '2xl': 'calc(var(--radius) + 8px)',
+        '3xl': 'calc(var(--radius) + 16px)',
       },
       boxShadow: {
-        xs: '0 1px 2px 0 rgba(0,0,0,0.05)',
-        glow: '0 0 40px oklch(0.82 0.22 145 / 0.15), 0 4px 24px oklch(0 0 0 / 0.4)',
-        'glow-electric': '0 0 40px oklch(0.72 0.20 200 / 0.2)',
+        xs: '0 1px 2px 0 rgba(0,0,0,0.04)',
+        pastel: '0 4px 24px oklch(0.82 0.10 160 / 0.18), 0 2px 8px oklch(0.88 0.09 340 / 0.12)',
+        glow: '0 4px 24px oklch(0.82 0.10 160 / 0.18), 0 2px 8px oklch(0.88 0.09 340 / 0.12)',
+        card: '0 2px 16px oklch(0.82 0.10 160 / 0.10), 0 1px 4px oklch(0.88 0.09 340 / 0.08)',
       },
       keyframes: {
         'accordion-down': {
@@ -97,15 +103,20 @@ export default {
           from: { height: 'var(--radix-accordion-content-height)' },
           to: { height: '0' }
         },
-        'pulse-glow': {
-          '0%, 100%': { opacity: '1' },
-          '50%': { opacity: '0.5' }
+        'float': {
+          '0%, 100%': { transform: 'translateY(0px)' },
+          '50%': { transform: 'translateY(-8px)' }
+        },
+        'wiggle': {
+          '0%, 100%': { transform: 'rotate(-2deg)' },
+          '50%': { transform: 'rotate(2deg)' }
         }
       },
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
         'accordion-up': 'accordion-up 0.2s ease-out',
-        'pulse-glow': 'pulse-glow 2s ease-in-out infinite',
+        'float': 'float 3s ease-in-out infinite',
+        'wiggle': 'wiggle 2s ease-in-out infinite',
       }
     }
   },

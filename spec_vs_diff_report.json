@@ -1,26 +1,57 @@
 {
   "kind": "spec_vs_diff_report",
   "version": "1.0",
-  "generatedAt": "2026-02-28T12:50:37.655Z",
-  "summary": "The diff implements all three requirements (REQ-7, REQ-8, REQ-9) with good coverage. A DrawingCanvas component is added, the Sender page gets a Text/Draw mode toggle and canvas integration, the Recipient page detects image data URLs and renders them as <img>, and the backend uses Motoko's Text type which handles large strings. One minor concern: REQ-7 explicitly requires a 'stroke size option' — the diff does include strokeSize controls (Minus/Plus buttons). REQ-9's backend changes are minimal (just a migration module added, no explicit payload size increase), but Motoko Text inherently supports large strings. Overall the implementation is solid with no significant missing requirements or hallucinated features.",
-  "missing_requirements": [],
-  "hallucinated_features": [
+  "generatedAt": "2026-02-28T13:50:25.610Z",
+  "summary": "The diff implements the vast majority of requirements. All five REQs are substantially addressed: backend room system (REQ-1), collaborative drawing with polling (REQ-2), voice messaging (REQ-3), Room UI with lobby (REQ-4), and updated routes (REQ-5). Minor gaps exist around participant count display and polling-based fetch of new strokes since a sequence number.",
+  "missing_requirements": [
     {
-      "description": "A backend migration module (migration.mo) was added as a no-op pass-through",
-      "reason": "The build request does not mention a migration module or any schema migration mechanism. While harmless, this was not requested.",
+      "id": "REQ-2",
+      "requirement": "Backend exposes a function to poll/fetch new strokes since a given timestamp or sequence number",
+      "reason": "The backend only exposes getStrokes(roomCode) which returns ALL strokes with no since-parameter filtering. The frontend compensates by slicing client-side via renderedStrokeCount.current, but the AC specifically requires a backend function that accepts a since-timestamp or sequence number.",
       "evidence": [
-        "backend/migration.mo",
-        "backend/main.mo"
+        "backend/main.mo",
+        "frontend/src/components/CollaborativeCanvas.tsx"
+      ]
+    },
+    {
+      "id": "REQ-4",
+      "requirement": "Participant count is visible on the room page",
+      "reason": "The Room.tsx page does not display a live participant count fetched from the backend. There is no hook polling a getParticipants or similar function, and the room header shows username and room code but no participant count indicator.",
+      "evidence": [
+        "frontend/src/pages/Room.tsx",
+        "frontend/src/hooks/useQueries.ts"
       ]
     }
   ],
-  "confidence": 0.87,
+  "hallucinated_features": [
+    {
+      "description": "getAllRoomCodes backend function exposed as a public query",
+      "reason": "No requirement asked for a public endpoint listing all room codes. This was not part of any acceptance criterion.",
+      "evidence": [
+        "backend/main.mo"
+      ]
+    },
+    {
+      "description": "migration.mo file added as a separate migration module",
+      "reason": "No requirement mentioned implementing a migration module. This is an infrastructure addition not requested in the build spec.",
+      "evidence": [
+        "backend/migration.mo"
+      ]
+    }
+  ],
+  "confidence": 0.82,
   "changed_files": [
     "backend/main.mo",
     "backend/migration.mo",
     "frontend-file-summaries.txt",
-    "frontend/src/components/DrawingCanvas.tsx",
+    "frontend/src/App.tsx",
+    "frontend/src/components/CollaborativeCanvas.tsx",
+    "frontend/src/components/VoiceMessagePanel.tsx",
+    "frontend/src/hooks/useAudioRecorder.ts",
+    "frontend/src/hooks/useQueries.ts",
+    "frontend/src/pages/Home.tsx",
     "frontend/src/pages/Recipient.tsx",
+    "frontend/src/pages/Room.tsx",
     "frontend/src/pages/Sender.tsx",
     "project_state.json"
   ]

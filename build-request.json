@@ -1,77 +1,120 @@
 {
   "kind": "build_request",
-  "title": "Add drawing/sketching capability to the widget",
-  "projectName": "TextWidget",
+  "title": "Multiplayer Drawing Room with Voice Messaging",
+  "projectName": "Doodle Room",
   "priority": "normal",
   "requirements": [
     {
-      "id": "REQ-7",
-      "text": "On the Sender page, add a drawing canvas tab or toggle alongside the existing text composer, allowing the sender to sketch/draw freehand using mouse or touch input. The drawing should be composable as an image payload to send to the paired recipient device.",
-      "target": "frontend",
-      "source": {
-        "messageIds": [
-          "msg-4"
-        ],
-        "quotes": [
-          "Also let it draw"
-        ]
-      },
-      "acceptanceCriteria": [
-        "The Sender page has a way to switch between 'Text' and 'Draw' modes.",
-        "In Draw mode, a canvas element is displayed where the user can draw freehand using mouse or touch.",
-        "The drawing canvas supports basic controls: clear/reset button, and a color/stroke size option consistent with the app theme.",
-        "The user can send the drawing to the paired recipient by pressing the same send button used for text.",
-        "The drawing is encoded (e.g., as a base64 data URL) and stored as the message payload on the backend."
-      ]
-    },
-    {
-      "id": "REQ-8",
-      "text": "On the Recipient/Widget page, detect whether the incoming message payload is a drawing (image data URL) or plain text, and render it appropriately. If it is a drawing, display it as a full-screen image on the widget. If it is text, display it as before.",
-      "target": "frontend",
-      "source": {
-        "messageIds": [
-          "msg-4"
-        ],
-        "quotes": [
-          "Also let it draw"
-        ]
-      },
-      "acceptanceCriteria": [
-        "When the polled message is a base64 image data URL, the Recipient page renders it as an <img> or <canvas> element filling the widget display area.",
-        "When the polled message is plain text, it continues to render as large text as before.",
-        "The drawing is displayed with the same bold, high-contrast full-screen widget style as text messages.",
-        "Transitioning between a text message and a drawing message (or vice versa) works correctly without page reload."
-      ]
-    },
-    {
-      "id": "REQ-9",
-      "text": "Extend the backend message storage to support larger payloads (base64-encoded image strings) without truncation. Ensure the existing sendMessage and pollMessage functions can handle drawing data URLs in addition to plain text strings.",
+      "id": "REQ-1",
+      "text": "Add a backend room system: users can create a named room (generating a unique room code) or join an existing room by entering a room code. The backend must store room state including a list of active participants and all drawing strokes (as serialized canvas data or stroke arrays) so late joiners can see the current canvas state.",
       "target": "backend",
       "source": {
         "messageIds": [
-          "msg-4"
+          "msg-6"
         ],
         "quotes": [
-          "Also let it draw"
+          "people can enter the room and all can draw in it"
         ]
       },
       "acceptanceCriteria": [
-        "The backend accepts and stores message payloads that are base64-encoded image data URLs (which can be significantly larger than plain text messages).",
-        "The pollMessage function returns the full drawing payload without truncation.",
-        "Existing plain text message functionality continues to work correctly."
+        "A createRoom function exists and returns a unique room code",
+        "A joinRoom function accepts a room code and registers a participant",
+        "The backend stores canvas strokes/state per room",
+        "A new joiner can retrieve the existing canvas state for a room"
+      ]
+    },
+    {
+      "id": "REQ-2",
+      "text": "Implement real-time collaborative drawing: all participants in a room share a single canvas. When one user draws a stroke, it is persisted to the backend and all other participants polling the room receive the new strokes and see them rendered on their canvas.",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-6"
+        ],
+        "quotes": [
+          "all can draw in it"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Backend exposes a function to submit a new stroke to a room",
+        "Backend exposes a function to poll/fetch new strokes since a given timestamp or sequence number",
+        "Frontend polls for new strokes at a short interval (e.g., 1–2 seconds) and renders them on the shared canvas",
+        "Multiple users drawing simultaneously results in all strokes appearing for all participants"
+      ]
+    },
+    {
+      "id": "REQ-3",
+      "text": "Implement in-room voice messaging: users can record a short voice message, which is encoded as base64 audio (WebM/Opus or similar) and stored in the backend against the room. All participants in the room can see and play back received voice messages in a message list panel.",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-6"
+        ],
+        "quotes": [
+          "can also send voice messages to each other"
+        ]
+      },
+      "acceptanceCriteria": [
+        "A record button is visible in the room UI; pressing and holding records audio, releasing stops recording",
+        "The recorded audio blob is base64-encoded and sent to the backend via a sendVoiceMessage function",
+        "The backend stores voice messages per room with a sender identifier and timestamp",
+        "All room participants polling for messages receive new voice messages and can play them back via an audio element",
+        "Voice messages appear in a chronological list alongside a playback control"
+      ]
+    },
+    {
+      "id": "REQ-4",
+      "text": "Build a Room UI: replace the existing sender/recipient pairing flow with a unified room-based lobby. The home page should offer 'Create Room' and 'Join Room' options. After entering/creating a room, users land on a room page that shows: the shared drawing canvas (with color and stroke controls), a voice message panel with record button and message history, a participant count or list, and the room code for sharing.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-6"
+        ],
+        "quotes": [
+          "people can enter the room",
+          "all can draw in it",
+          "send voice messages to each other"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Home page shows 'Create Room' and 'Join Room' options",
+        "Join Room accepts a room code input",
+        "Room page displays a full collaborative canvas matching the existing DrawingCanvas component style",
+        "Room page shows a voice message section with a record button and scrollable list of received voice messages",
+        "Room code is displayed on the room page so users can share it",
+        "Participant count is visible",
+        "Visual style is consistent with the existing pastel/doodle aesthetic"
+      ]
+    },
+    {
+      "id": "REQ-5",
+      "text": "Update the TanStack Router routes to include a /room/:code route for the shared room page, and update App.tsx accordingly. Preserve existing / route for the updated home/lobby page.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-6"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Route /room/:code renders the room page with the correct room code",
+        "Navigating to / shows the lobby with Create/Join options",
+        "No broken routes from previous sender/recipient flow (or they are cleanly removed if replaced)"
       ]
     }
   ],
   "constraints": [
-    "Do not change the pairing code mechanism or the overall sender/recipient flow.",
-    "Preserve all existing text messaging functionality.",
-    "Do not modify files listed in frontend.immutablePaths."
+    "All backend logic must remain in the single Motoko actor in backend/main.mo",
+    "Do not edit files under frontend/src/hooks/useInternetIdentity.ts, frontend/src/hooks/useActor.ts, frontend/src/main.tsx, or frontend/src/components/ui",
+    "Voice messages must be stored as base64-encoded strings in the Motoko backend (no external storage)",
+    "Use polling (not WebSockets) for real-time updates, consistent with existing useQueries.ts patterns",
+    "Maintain the existing pastel/doodle visual theme from index.css and tailwind.config.js"
   ],
   "nonGoals": [
-    "Real-time collaborative drawing.",
-    "Saving or exporting drawings to a separate store.",
-    "Adding brush/layer tools beyond basic freehand sketching.",
-    "Video or audio messaging."
+    "True WebSocket-based real-time push (polling only)",
+    "User authentication or Internet Identity login for room access",
+    "Persistent rooms across canister upgrades (in-memory state is acceptable)",
+    "Video calling or live audio streaming",
+    "Private/password-protected rooms"
   ],
   "imageRequirements": {
     "required": [],

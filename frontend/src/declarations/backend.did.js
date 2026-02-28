@@ -8,23 +8,53 @@
 
 import { IDL } from '@icp-sdk/core/candid';
 
+export const AudioMessage = IDL.Record({
+  'audioData' : IDL.Text,
+  'sender' : IDL.Text,
+  'timestamp' : IDL.Nat,
+});
+export const Stroke = IDL.Record({
+  'color' : IDL.Text,
+  'thickness' : IDL.Float64,
+  'points' : IDL.Vec(IDL.Tuple(IDL.Float64, IDL.Float64)),
+});
+
 export const idlService = IDL.Service({
-  'createPairingCode' : IDL.Func([IDL.Text], [], []),
-  'getAllPairingCodes' : IDL.Func([], [IDL.Vec(IDL.Text)], ['query']),
-  'pollMessage' : IDL.Func([IDL.Text], [IDL.Text], ['query']),
-  'registerRecipient' : IDL.Func([IDL.Text, IDL.Text], [], []),
-  'sendMessage' : IDL.Func([IDL.Text, IDL.Text], [], []),
+  'addAudioMessage' : IDL.Func([IDL.Text, AudioMessage], [], []),
+  'addStroke' : IDL.Func([IDL.Text, Stroke], [], []),
+  'createRoom' : IDL.Func([IDL.Text], [IDL.Text], []),
+  'getAllRoomCodes' : IDL.Func([], [IDL.Vec(IDL.Text)], ['query']),
+  'getAudioMessages' : IDL.Func([IDL.Text], [IDL.Vec(AudioMessage)], ['query']),
+  'getStrokes' : IDL.Func([IDL.Text], [IDL.Vec(Stroke)], ['query']),
+  'joinRoom' : IDL.Func([IDL.Text, IDL.Text], [], []),
 });
 
 export const idlInitArgs = [];
 
 export const idlFactory = ({ IDL }) => {
+  const AudioMessage = IDL.Record({
+    'audioData' : IDL.Text,
+    'sender' : IDL.Text,
+    'timestamp' : IDL.Nat,
+  });
+  const Stroke = IDL.Record({
+    'color' : IDL.Text,
+    'thickness' : IDL.Float64,
+    'points' : IDL.Vec(IDL.Tuple(IDL.Float64, IDL.Float64)),
+  });
+  
   return IDL.Service({
-    'createPairingCode' : IDL.Func([IDL.Text], [], []),
-    'getAllPairingCodes' : IDL.Func([], [IDL.Vec(IDL.Text)], ['query']),
-    'pollMessage' : IDL.Func([IDL.Text], [IDL.Text], ['query']),
-    'registerRecipient' : IDL.Func([IDL.Text, IDL.Text], [], []),
-    'sendMessage' : IDL.Func([IDL.Text, IDL.Text], [], []),
+    'addAudioMessage' : IDL.Func([IDL.Text, AudioMessage], [], []),
+    'addStroke' : IDL.Func([IDL.Text, Stroke], [], []),
+    'createRoom' : IDL.Func([IDL.Text], [IDL.Text], []),
+    'getAllRoomCodes' : IDL.Func([], [IDL.Vec(IDL.Text)], ['query']),
+    'getAudioMessages' : IDL.Func(
+        [IDL.Text],
+        [IDL.Vec(AudioMessage)],
+        ['query'],
+      ),
+    'getStrokes' : IDL.Func([IDL.Text], [IDL.Vec(Stroke)], ['query']),
+    'joinRoom' : IDL.Func([IDL.Text, IDL.Text], [], []),
   });
 };
 

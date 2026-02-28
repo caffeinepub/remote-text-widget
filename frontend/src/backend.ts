@@ -89,82 +89,122 @@ export class ExternalBlob {
         return this;
     }
 }
+export interface Stroke {
+    color: string;
+    thickness: number;
+    points: Array<[number, number]>;
+}
+export interface AudioMessage {
+    audioData: string;
+    sender: string;
+    timestamp: bigint;
+}
 export interface backendInterface {
-    createPairingCode(pairingCode: string): Promise<void>;
-    getAllPairingCodes(): Promise<Array<string>>;
-    pollMessage(pairingCode: string): Promise<string>;
-    registerRecipient(pairingCode: string, recipient: string): Promise<void>;
-    sendMessage(pairingCode: string, message: string): Promise<void>;
+    addAudioMessage(roomCode: string, message: AudioMessage): Promise<void>;
+    addStroke(roomCode: string, stroke: Stroke): Promise<void>;
+    createRoom(roomName: string): Promise<string>;
+    getAllRoomCodes(): Promise<Array<string>>;
+    getAudioMessages(roomCode: string): Promise<Array<AudioMessage>>;
+    getStrokes(roomCode: string): Promise<Array<Stroke>>;
+    joinRoom(roomCode: string, user: string): Promise<void>;
 }
 export class Backend implements backendInterface {
     constructor(private actor: ActorSubclass<_SERVICE>, private _uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, private _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, private processError?: (error: unknown) => never){}
-    async createPairingCode(arg0: string): Promise<void> {
+    async addAudioMessage(arg0: string, arg1: AudioMessage): Promise<void> {
         if (this.processError) {
             try {
-                const result = await this.actor.createPairingCode(arg0);
+                const result = await this.actor.addAudioMessage(arg0, arg1);
                 return result;
             } catch (e) {
                 this.processError(e);
                 throw new Error("unreachable");
             }
         } else {
-            const result = await this.actor.createPairingCode(arg0);
+            const result = await this.actor.addAudioMessage(arg0, arg1);
             return result;
         }
     }
-    async getAllPairingCodes(): Promise<Array<string>> {
+    async addStroke(arg0: string, arg1: Stroke): Promise<void> {
         if (this.processError) {
             try {
-                const result = await this.actor.getAllPairingCodes();
+                const result = await this.actor.addStroke(arg0, arg1);
                 return result;
             } catch (e) {
                 this.processError(e);
                 throw new Error("unreachable");
             }
         } else {
-            const result = await this.actor.getAllPairingCodes();
+            const result = await this.actor.addStroke(arg0, arg1);
             return result;
         }
     }
-    async pollMessage(arg0: string): Promise<string> {
+    async createRoom(arg0: string): Promise<string> {
         if (this.processError) {
             try {
-                const result = await this.actor.pollMessage(arg0);
+                const result = await this.actor.createRoom(arg0);
                 return result;
             } catch (e) {
                 this.processError(e);
                 throw new Error("unreachable");
             }
         } else {
-            const result = await this.actor.pollMessage(arg0);
+            const result = await this.actor.createRoom(arg0);
             return result;
         }
     }
-    async registerRecipient(arg0: string, arg1: string): Promise<void> {
+    async getAllRoomCodes(): Promise<Array<string>> {
         if (this.processError) {
             try {
-                const result = await this.actor.registerRecipient(arg0, arg1);
+                const result = await this.actor.getAllRoomCodes();
                 return result;
             } catch (e) {
                 this.processError(e);
                 throw new Error("unreachable");
             }
         } else {
-            const result = await this.actor.registerRecipient(arg0, arg1);
+            const result = await this.actor.getAllRoomCodes();
             return result;
         }
     }
-    async sendMessage(arg0: string, arg1: string): Promise<void> {
+    async getAudioMessages(arg0: string): Promise<Array<AudioMessage>> {
         if (this.processError) {
             try {
-                const result = await this.actor.sendMessage(arg0, arg1);
+                const result = await this.actor.getAudioMessages(arg0);
                 return result;
             } catch (e) {
                 this.processError(e);
                 throw new Error("unreachable");
             }
         } else {
-            const result = await this.actor.sendMessage(arg0, arg1);
+            const result = await this.actor.getAudioMessages(arg0);
+            return result;
+        }
+    }
+    async getStrokes(arg0: string): Promise<Array<Stroke>> {
+        if (this.processError) {
+            try {
+                const result = await this.actor.getStrokes(arg0);
+                return result;
+            } catch (e) {
+                this.processError(e);
+                throw new Error("unreachable");
+            }
+        } else {
+            const result = await this.actor.getStrokes(arg0);
+            return result;
+        }
+    }
+    async joinRoom(arg0: string, arg1: string): Promise<void> {
+        if (this.processError) {
+            try {
+                const result = await this.actor.joinRoom(arg0, arg1);
+                return result;
+            } catch (e) {
+                this.processError(e);
+                throw new Error("unreachable");
+            }
+        } else {
+            const result = await this.actor.joinRoom(arg0, arg1);
             return result;
         }
     }

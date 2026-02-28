@@ -2,8 +2,7 @@ import { RouterProvider, createRouter, createRoute, createRootRoute, Outlet } fr
 import { Toaster } from '@/components/ui/sonner';
 import Layout from './components/Layout';
 import Home from './pages/Home';
-import Sender from './pages/Sender';
-import Recipient from './pages/Recipient';
+import Room from './pages/Room';
 
 const rootRoute = createRootRoute({
   component: () => (
@@ -11,7 +10,7 @@ const rootRoute = createRootRoute({
       <Layout>
         <Outlet />
       </Layout>
-      <Toaster theme="dark" position="top-center" />
+      <Toaster theme="light" position="top-center" />
     </>
   ),
 });
@@ -22,19 +21,13 @@ const homeRoute = createRoute({
   component: Home,
 });
 
-const senderRoute = createRoute({
+const roomRoute = createRoute({
   getParentRoute: () => rootRoute,
-  path: '/sender',
-  component: Sender,
+  path: '/room/$code',
+  component: Room,
 });
 
-const recipientRoute = createRoute({
-  getParentRoute: () => rootRoute,
-  path: '/recipient',
-  component: Recipient,
-});
-
-const routeTree = rootRoute.addChildren([homeRoute, senderRoute, recipientRoute]);
+const routeTree = rootRoute.addChildren([homeRoute, roomRoute]);
 
 const router = createRouter({ routeTree });
 

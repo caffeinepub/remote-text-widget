@@ -1,45 +1,98 @@
 {
   "kind": "implementation_plan",
   "version": "1.0",
-  "title": "Add drawing/sketching capability to the widget",
+  "title": "Multiplayer Drawing Room with Voice Messaging",
   "requirements": [
     {
-      "id": "REQ-7",
-      "summary": "Add a drawing canvas tab/toggle to the Sender page allowing freehand sketching with mouse or touch input, composable as an image payload to send to the paired recipient device",
+      "id": "REQ-2",
+      "summary": "Implement real-time collaborative drawing with stroke polling and rendering",
       "acceptanceCriteria": [
-        "The Sender page has a way to switch between 'Text' and 'Draw' modes.",
-        "In Draw mode, a canvas element is displayed where the user can draw freehand using mouse or touch.",
-        "The drawing canvas supports basic controls: clear/reset button, and a color/stroke size option consistent with the app theme.",
-        "The user can send the drawing to the paired recipient by pressing the same send button used for text.",
-        "The drawing is encoded (e.g., as a base64 data URL) and stored as the message payload on the backend."
+        "Frontend polls for new strokes at a short interval (e.g., 1–2 seconds) and renders them on the shared canvas",
+        "Multiple users drawing simultaneously results in all strokes appearing for all participants"
       ],
       "file_operations": [
         {
-          "path": "frontend/src/pages/Sender.tsx",
+          "path": "frontend/src/hooks/useQueries.ts",
           "operation": "modify",
-          "description": "Add state to track the current mode ('text' or 'draw') and toggle UI. Replace the existing textarea with a mode switcher (tab buttons or toggle) and conditionally render either the existing textarea for text mode or a DrawingCanvas component for draw mode. Modify the handleSendMessage function to check the mode: if 'text', send the text as before; if 'draw', encode the canvas content as a base64 data URL and send that. Preserve the existing pairing code entry, character count, and send button behavior. Display the success message after sending regardless of mode."
+          "description": "Add useAddStroke mutation hook that calls backend addStroke with roomCode and stroke data. Add usePollStrokes query hook that fetches strokes for a room with a 2-second refetch interval, similar to existing pollMessage pattern. These hooks will enable collaborative drawing by submitting local strokes and continuously fetching new strokes from other participants."
         },
         {
-          "path": "frontend/src/components/DrawingCanvas.tsx",
+          "path": "frontend/src/components/CollaborativeCanvas.tsx",
           "operation": "create",
-          "description": "Create a new DrawingCanvas component that renders an HTML canvas element for freehand drawing. Implement mouse and touch event handlers (onMouseDown, onMouseMove, onMouseUp, onTouchStart, onTouchMove, onTouchEnd) to draw strokes on the canvas. Provide a clear/reset button to wipe the canvas. Include a simple color picker (or predefined color swatches) and stroke size selector consistent with the app theme (using OKLCH color tokens from the design system). Expose a method or ref to retrieve the canvas content as a base64 data URL (canvas.toDataURL()) so the parent Sender component can send it. Style the canvas and controls to match the existing dark theme and widget aesthetic."
+          "description": "Create a collaborative canvas component that wraps DrawingCanvas functionality and adds multiplayer capabilities. It will accept a roomCode prop, use usePollStrokes to fetch and render remote strokes on the canvas, and use useAddStroke to submit local strokes as they are drawn. The component will maintain a set of already-rendered stroke IDs to avoid duplicates and will render both local and remote strokes on the same canvas context."
         }
       ]
     },
     {
-      "id": "REQ-8",
-      "summary": "On the Recipient/Widget page, detect whether the incoming message payload is a drawing (image data URL) or plain text, and render it appropriately as a full-screen image or text",
+      "id": "REQ-3",
+      "summary": "Implement in-room voice messaging with recording, base64 encoding, and playback",
       "acceptanceCriteria": [
-        "When the polled message is a base64 image data URL, the Recipient page renders it as an <img> or <canvas> element filling the widget display area.",
-        "When the polled message is plain text, it continues to render as large text as before.",
-        "The drawing is displayed with the same bold, high-contrast full-screen widget style as text messages.",
-        "Transitioning between a text message and a drawing message (or vice versa) works correctly without page reload."
+        "A record button is visible in the room UI; pressing and holding records audio, releasing stops recording",
+        "The recorded audio blob is base64-encoded and sent to the backend via a sendVoiceMessage function",
+        "All room participants polling for messages receive new voice messages and can play them back via an audio element",
+        "Voice messages appear in a chronological list alongside a playback control"
       ],
       "file_operations": [
         {
-          "path": "frontend/src/pages/Recipient.tsx",
+          "path": "frontend/src/hooks/useQueries.ts",
           "operation": "modify",
-          "description": "Add logic to detect whether the polled message starts with a data URL scheme (e.g., 'data:image/png;base64,') to determine if it is a drawing or plain text. If it is a drawing, render it using an <img> element with src set to the data URL, styled to fill the widget display area (object-fit: contain or cover, full width/height). If it is plain text, render it as before using the existing widget text styling. Ensure the rendering transitions smoothly when the message type changes (text to drawing or vice versa) without requiring a page reload. Preserve the existing full-screen widget style, dark theme, and neon/electric color accents for both text and images."
+          "description": "Add useSendVoiceMessage mutation hook that accepts roomCode, audioData (base64 string), and sender, then calls backend addAudioMessage. Add usePollVoiceMessages query hook that fetches audio messages for a room with a 3-second refetch interval, consistent with the existing pollMessage pattern. These hooks enable voice message submission and real-time retrieval."
+        },
+        {
+          "path": "frontend/src/hooks/useAudioRecorder.ts",
+          "operation": "create",
+          "description": "Create a custom hook that manages MediaRecorder lifecycle for voice recording. It will expose startRecording, stopRecording, isRecording state, and return the recorded audio blob as a base64-encoded string. The hook will handle browser media permissions, MediaRecorder instantiation with WebM/Opus codec preference, and blob-to-base64 conversion using FileReader."
+        },
+        {
+          "path": "frontend/src/components/VoiceMessagePanel.tsx",
+          "operation": "create",
+          "description": "Create a voice message panel component that displays a record button (hold to record, release to stop) using the useAudioRecorder hook, and shows a scrollable list of voice messages fetched via usePollVoiceMessages. Each message in the list will include sender name, timestamp, and a play button that renders an HTML audio element with the base64 data URI. Style the panel with pastel colors and doodle aesthetics consistent with existing UI."
+        }
+      ]
+    },
+    {
+      "id": "REQ-4",
+      "summary": "Build a unified Room UI with lobby, canvas, voice panel, and participant info",
+      "acceptanceCriteria": [
+        "Home page shows 'Create Room' and 'Join Room' options",
+        "Join Room accepts a room code input",
+        "Room page displays a full collaborative canvas matching the existing DrawingCanvas component style",
+        "Room page shows a voice message section with a record button and scrollable list of received voice messages",
+        "Room code is displayed on the room page so users can share it",
+        "Participant count is visible",
+        "Visual style is consistent with the existing pastel/doodle aesthetic"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/pages/Home.tsx",
+          "operation": "modify",
+          "description": "Replace the existing sender/recipient pairing flow with a room-based lobby. Add a 'Create Room' button that prompts for a room name, calls useCreateRoom mutation, and navigates to /room/:code on success. Add a 'Join Room' section with a text input for room code and a join button that navigates to /room/:code. Remove references to sender/recipient roles. Maintain the existing pastel blob decorations and doodle background aesthetic."
+        },
+        {
+          "path": "frontend/src/hooks/useQueries.ts",
+          "operation": "modify",
+          "description": "Add useCreateRoom mutation hook that calls backend createRoom with a roomName and returns the generated room code. Add useJoinRoom mutation hook that calls backend joinRoom with roomCode and a username. Add useGetParticipantCount query hook (optional, if backend exposes participant count). These hooks enable room creation and joining flows from the frontend."
+        },
+        {
+          "path": "frontend/src/pages/Room.tsx",
+          "operation": "create",
+          "description": "Create the main room page component that accepts roomCode from route params. The layout will include: a header displaying the room code with a copy button and participant count, the CollaborativeCanvas component (created in REQ-2) occupying the main area with color/stroke controls, and the VoiceMessagePanel component (created in REQ-3) in a side panel or bottom section. Use flexbox or grid layout to organize these sections. Apply pastel colors, rounded corners, and doodle shadows consistent with the existing theme from frontend/src/index.css and frontend/tailwind.config.js. On mount, call useJoinRoom to register the user in the room."
+        }
+      ]
+    },
+    {
+      "id": "REQ-5",
+      "summary": "Update TanStack Router routes to include /room/:code and update App.tsx",
+      "acceptanceCriteria": [
+        "Route /room/:code renders the room page with the correct room code",
+        "Navigating to / shows the lobby with Create/Join options",
+        "No broken routes from previous sender/recipient flow (or they are cleanly removed if replaced)"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Add a new route for /room/:code that renders the Room page component. Remove or comment out the /sender and /recipient routes since they are being replaced by the unified room flow. Ensure the / route still renders the updated Home page (modified in REQ-4). Maintain the existing Layout wrapper and Toaster configuration."
         }
       ]
     }

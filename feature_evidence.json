@@ -2,11 +2,11 @@
   "kind": "feature_evidence_report",
   "features": [
     {
-      "featureId": "feature-on-the-sender-page-add-a-drawing-canvas-tab-or-toggle-alongside-the-existing-text-composer-allowing-the-sender-to-sketch-draw-freehand-using-mouse-or-touch-input-the-drawing-should-be-composable-as-an-image-payload-to-send-to-the-paired-recipient-device",
-      "featureTitle": "On the Sender page, add a drawing canvas tab or toggle alongside the existing text composer, allowing the sender to sketch/draw freehand using mouse or touch input. The drawing should be composable as an image payload to send to the paired recipient device.",
+      "featureId": "feature-implement-real-time-collaborative-drawing-all-participants-in-a-room-share-a-single-canvas-when-one-user-draws-a-stroke-it-is-persisted-to-the-backend-and-all-other-participants-polling-the-room-receive-the-new-strokes-and-see-them-rendered-on-their-canvas",
+      "featureTitle": "Implement real-time collaborative drawing: all participants in a room share a single canvas. When one user draws a stroke, it is persisted to the backend and all other participants polling the room receive the new strokes and see them rendered on their canvas.",
       "files": [
-        "frontend/src/components/DrawingCanvas.tsx",
-        "frontend/src/pages/Sender.tsx"
+        "frontend/src/components/CollaborativeCanvas.tsx",
+        "frontend/src/hooks/useQueries.ts"
       ],
       "components": [
         "core-infrastructure@1.0.2",
@@ -16,15 +16,17 @@
         "github-export-icp-cli@1.0.0"
       ],
       "testIds": [
-        "REQ-7"
+        "REQ-2"
       ],
       "confidence": "high"
     },
     {
-      "featureId": "feature-on-the-recipient-widget-page-detect-whether-the-incoming-message-payload-is-a-drawing-image-data-url-or-plain-text-and-render-it-appropriately-if-it-is-a-drawing-display-it-as-a-full-screen-image-on-the-widget-if-it-is-text-display-it-as-before",
-      "featureTitle": "On the Recipient/Widget page, detect whether the incoming message payload is a drawing (image data URL) or plain text, and render it appropriately. If it is a drawing, display it as a full-screen image on the widget. If it is text, display it as before.",
+      "featureId": "feature-implement-in-room-voice-messaging-users-can-record-a-short-voice-message-which-is-encoded-as-base64-audio-webm-opus-or-similar-and-stored-in-the-backend-against-the-room-all-participants-in-the-room-can-see-and-play-back-received-voice-messages-in-a-message-list-panel",
+      "featureTitle": "Implement in-room voice messaging: users can record a short voice message, which is encoded as base64 audio (WebM/Opus or similar) and stored in the backend against the room. All participants in the room can see and play back received voice messages in a message list panel.",
       "files": [
-        "frontend/src/pages/Recipient.tsx"
+        "frontend/src/components/VoiceMessagePanel.tsx",
+        "frontend/src/hooks/useAudioRecorder.ts",
+        "frontend/src/hooks/useQueries.ts"
       ],
       "components": [
         "core-infrastructure@1.0.2",
@@ -34,7 +36,45 @@
         "github-export-icp-cli@1.0.0"
       ],
       "testIds": [
-        "REQ-8"
+        "REQ-3"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-build-a-room-ui-replace-the-existing-sender-recipient-pairing-flow-with-a-unified-room-based-lobby-the-home-page-should-offer-create-room-and-join-room-options-after-entering-creating-a-room-users-land-on-a-room-page-that-shows-the-shared-drawing-canvas-with-color-and-stroke-controls-a-voice-message-panel-with-record-button-and-message-history-a-participant-count-or-list-and-the-room-code-for-sharing",
+      "featureTitle": "Build a Room UI: replace the existing sender/recipient pairing flow with a unified room-based lobby. The home page should offer 'Create Room' and 'Join Room' options. After entering/creating a room, users land on a room page that shows: the shared drawing canvas (with color and stroke controls), a voice message panel with record button and message history, a participant count or list, and the room code for sharing.",
+      "files": [
+        "frontend/src/hooks/useQueries.ts",
+        "frontend/src/pages/Home.tsx",
+        "frontend/src/pages/Room.tsx"
+      ],
+      "components": [
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-4"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-update-the-tanstack-router-routes-to-include-a-room-code-route-for-the-shared-room-page-and-update-app-tsx-accordingly-preserve-existing-route-for-the-updated-home-lobby-page",
+      "featureTitle": "Update the TanStack Router routes to include a /room/:code route for the shared room page, and update App.tsx accordingly. Preserve existing / route for the updated home/lobby page.",
+      "files": [
+        "frontend/src/App.tsx"
+      ],
+      "components": [
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-5"
       ],
       "confidence": "high"
     }

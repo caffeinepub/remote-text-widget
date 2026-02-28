@@ -11,25 +11,25 @@ export default function Layout({ children }: LayoutProps) {
   );
 
   return (
-    <div className="min-h-screen flex flex-col bg-surface text-foreground font-sans">
+    <div className="min-h-screen flex flex-col bg-background text-foreground font-sans">
       <main className="flex-1 flex flex-col">
         {children}
       </main>
-      <footer className="py-4 px-6 text-center text-xs text-muted-foreground border-t border-border/30">
+      <footer className="py-4 px-6 text-center text-xs text-muted-foreground border-t border-border">
         <span className="inline-flex items-center gap-1.5">
           Built with{' '}
-          <Heart className="w-3 h-3 fill-neon text-neon" />
+          <Heart className="w-3 h-3 fill-pastel-pink text-pastel-pink" />
           {' '}using{' '}
           <a
             href={`https://caffeine.ai/?utm_source=Caffeine-footer&utm_medium=referral&utm_content=${appId}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-neon hover:underline font-medium"
+            className="text-primary hover:underline font-semibold"
           >
             caffeine.ai
           </a>
         </span>
-        <span className="ml-3 text-muted-foreground/50">© {new Date().getFullYear()} Remote Text Widget</span>
+        <span className="ml-3 text-muted-foreground/60">© {new Date().getFullYear()} Remote Text Widget</span>
       </footer>
     </div>
   );
