@@ -1,0 +1,114 @@
+{
+  "schemaVersion": "1.0.0",
+  "projectStateVersion": 7,
+  "summary": "App that allows the user to send/display text on another person's phone via a widget.",
+  "architectural_notes": [
+    "App involves a sender side (text composer) and a receiver side (widget display); real-time or near-real-time message delivery is required."
+  ],
+  "known_issues": [],
+  "isFixRequest": false,
+  "existing_features": [
+    {
+      "id": "feature-create-a-sender-page-where-the-user-can-enter-a-pairing-code-and-compose-a-text-message-to-send-to-the-paired-recipient-device-the-page-should-show-confirmation-when-the-message-has-been-sent",
+      "title": "Create a Sender page where the user can enter a pairing code and compose a text message to send to the paired recipient device. The page should show confirmation when the message has been sent.",
+      "reqIds": [
+        "REQ-2"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-create-a-recipient-widget-page-that-displays-the-incoming-text-message-for-a-given-pairing-code-the-page-should-poll-the-backend-at-a-regular-interval-e-g-every-3-seconds-and-update-the-displayed-message-in-real-time-the-page-should-be-designed-to-look-like-a-full-screen-widget-suitable-for-display-on-a-phone",
+      "title": "Create a Recipient/Widget page that displays the incoming text message for a given pairing code. The page should poll the backend at a regular interval (e.g., every 3 seconds) and update the displayed message in real time. The page should be designed to look like a full-screen widget suitable for display on a phone.",
+      "reqIds": [
+        "REQ-3"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-create-a-home-landing-page-that-allows-the-user-to-choose-a-role-send-a-message-sender-or-display-widget-recipient-from-this-page-generate-or-enter-a-pairing-code-to-connect-the-two-devices",
+      "title": "Create a Home/Landing page that allows the user to choose a role: 'Send a Message' (Sender) or 'Display Widget' (Recipient). From this page, generate or enter a pairing code to connect the two devices.",
+      "reqIds": [
+        "REQ-4"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-apply-a-bold-high-contrast-visual-theme-using-dark-backgrounds-with-vivid-accent-colors-e-g-electric-green-or-neon-orange-large-typography-and-a-clean-minimal-layout-the-widget-display-page-should-feel-immersive-and-phone-screen-like-enforce-this-theme-consistently-across-all-pages",
+      "title": "Apply a bold, high-contrast visual theme using dark backgrounds with vivid accent colors (e.g., electric green or neon orange), large typography, and a clean minimal layout. The widget display page should feel immersive and phone-screen-like. Enforce this theme consistently across all pages.",
+      "reqIds": [
+        "REQ-5"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-promote-the-current-draft-version-of-the-app-to-live-mode-so-it-is-publicly-accessible-via-a-shareable-url",
+      "title": "Promote the current draft version of the app to live mode so it is publicly accessible via a shareable URL.",
+      "reqIds": [
+        "REQ-6"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-on-the-sender-page-add-a-drawing-canvas-tab-or-toggle-alongside-the-existing-text-composer-allowing-the-sender-to-sketch-draw-freehand-using-mouse-or-touch-input-the-drawing-should-be-composable-as-an-image-payload-to-send-to-the-paired-recipient-device",
+      "title": "On the Sender page, add a drawing canvas tab or toggle alongside the existing text composer, allowing the sender to sketch/draw freehand using mouse or touch input. The drawing should be composable as an image payload to send to the paired recipient device.",
+      "reqIds": [
+        "REQ-7"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-on-the-recipient-widget-page-detect-whether-the-incoming-message-payload-is-a-drawing-image-data-url-or-plain-text-and-render-it-appropriately-if-it-is-a-drawing-display-it-as-a-full-screen-image-on-the-widget-if-it-is-text-display-it-as-before",
+      "title": "On the Recipient/Widget page, detect whether the incoming message payload is a drawing (image data URL) or plain text, and render it appropriately. If it is a drawing, display it as a full-screen image on the widget. If it is text, display it as before.",
+      "reqIds": [
+        "REQ-8"
+      ],
+      "version": 1
+    }
+  ],
+  "new_feature_requests": [
+    {
+      "id": "AR-1",
+      "summary": "Text input interface to compose a message to be sent to another device",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-2",
+      "summary": "Widget on the recipient's phone that displays the incoming text message",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-3",
+      "summary": "Mechanism to target/connect to a specific recipient's device (e.g., via device ID or pairing code)",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-4",
+      "summary": "Implement a backend actor that stores device/session pairing codes and associated messages. Support creating a new pairing code, registering a recipient session under a pairing code, sending a text message to a pairing code, and polling for the latest message by pairing code.",
+      "reqIds": [
+        "REQ-1"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-5",
+      "summary": "Allow the user to draw/sketch on the widget display, in addition to sending text",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-8",
+      "summary": "Extend the backend message storage to support larger payloads (base64-encoded image strings) without truncation. Ensure the existing sendMessage and pollMessage functions can handle drawing data URLs in addition to plain text strings.",
+      "reqIds": [
+        "REQ-9"
+      ],
+      "status": "pending"
+    }
+  ],
+  "gameProjectType": "none",
+  "projectName": "Remote Text Widget",
+  "clarification_mode": "instant",
+  "clarification_rounds": 0
+}

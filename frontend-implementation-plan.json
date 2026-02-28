@@ -1,0 +1,47 @@
+{
+  "kind": "implementation_plan",
+  "version": "1.0",
+  "title": "Add drawing/sketching capability to the widget",
+  "requirements": [
+    {
+      "id": "REQ-7",
+      "summary": "Add a drawing canvas tab/toggle to the Sender page allowing freehand sketching with mouse or touch input, composable as an image payload to send to the paired recipient device",
+      "acceptanceCriteria": [
+        "The Sender page has a way to switch between 'Text' and 'Draw' modes.",
+        "In Draw mode, a canvas element is displayed where the user can draw freehand using mouse or touch.",
+        "The drawing canvas supports basic controls: clear/reset button, and a color/stroke size option consistent with the app theme.",
+        "The user can send the drawing to the paired recipient by pressing the same send button used for text.",
+        "The drawing is encoded (e.g., as a base64 data URL) and stored as the message payload on the backend."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/pages/Sender.tsx",
+          "operation": "modify",
+          "description": "Add state to track the current mode ('text' or 'draw') and toggle UI. Replace the existing textarea with a mode switcher (tab buttons or toggle) and conditionally render either the existing textarea for text mode or a DrawingCanvas component for draw mode. Modify the handleSendMessage function to check the mode: if 'text', send the text as before; if 'draw', encode the canvas content as a base64 data URL and send that. Preserve the existing pairing code entry, character count, and send button behavior. Display the success message after sending regardless of mode."
+        },
+        {
+          "path": "frontend/src/components/DrawingCanvas.tsx",
+          "operation": "create",
+          "description": "Create a new DrawingCanvas component that renders an HTML canvas element for freehand drawing. Implement mouse and touch event handlers (onMouseDown, onMouseMove, onMouseUp, onTouchStart, onTouchMove, onTouchEnd) to draw strokes on the canvas. Provide a clear/reset button to wipe the canvas. Include a simple color picker (or predefined color swatches) and stroke size selector consistent with the app theme (using OKLCH color tokens from the design system). Expose a method or ref to retrieve the canvas content as a base64 data URL (canvas.toDataURL()) so the parent Sender component can send it. Style the canvas and controls to match the existing dark theme and widget aesthetic."
+        }
+      ]
+    },
+    {
+      "id": "REQ-8",
+      "summary": "On the Recipient/Widget page, detect whether the incoming message payload is a drawing (image data URL) or plain text, and render it appropriately as a full-screen image or text",
+      "acceptanceCriteria": [
+        "When the polled message is a base64 image data URL, the Recipient page renders it as an <img> or <canvas> element filling the widget display area.",
+        "When the polled message is plain text, it continues to render as large text as before.",
+        "The drawing is displayed with the same bold, high-contrast full-screen widget style as text messages.",
+        "Transitioning between a text message and a drawing message (or vice versa) works correctly without page reload."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/pages/Recipient.tsx",
+          "operation": "modify",
+          "description": "Add logic to detect whether the polled message starts with a data URL scheme (e.g., 'data:image/png;base64,') to determine if it is a drawing or plain text. If it is a drawing, render it using an <img> element with src set to the data URL, styled to fill the widget display area (object-fit: contain or cover, full width/height). If it is plain text, render it as before using the existing widget text styling. Ensure the rendering transitions smoothly when the message type changes (text to drawing or vice versa) without requiring a page reload. Preserve the existing full-screen widget style, dark theme, and neon/electric color accents for both text and images."
+        }
+      ]
+    }
+  ]
+}

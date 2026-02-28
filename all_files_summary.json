@@ -1,0 +1,21 @@
+{
+  "backend/main.mo": "Motoko actor that manages pairing codes, recipients, and messages using two maps; exposes functions to create pairing codes, register recipients, send messages, poll messages, and list all pairing codes.",
+  "backend/migration.mo": "Minimal migration module with a no-op `run` function that passes state through unchanged.",
+  "feature_evidence.json": "Feature evidence report linking two features—drawing canvas on the Sender page and drawing/text detection on the Recipient page—to their implementing files and test IDs.",
+  "frontend-file-summaries.txt": "JSON document containing one-sentence summaries of each frontend source file, serving as a reference index for the project's frontend components and pages.",
+  "frontend/index.css": "Defines Tailwind base styles and OKLCH CSS custom properties for both light and dark themes covering background, foreground, card, border, and chart color tokens.",
+  "frontend/index.html": "HTML entry point with SEO, Open Graph, PWA, and mobile meta tags, loading the React app via `/src/main.tsx`.",
+  "frontend/src/App.tsx": "Sets up TanStack Router with routes for Home (`/`), Sender (`/sender`), and Recipient (`/recipient`), wrapped in a shared Layout with a dark-themed Toaster.",
+  "frontend/src/components/DrawingCanvas.tsx": "Freehand drawing canvas component with mouse/touch support, color swatches, and stroke size controls; exposes `getDataURL()` and `isEmpty()` via a forwarded ref for parent consumption.",
+  "frontend/src/components/Layout.tsx": "Shared layout wrapper providing a dark-themed shell with a flexible main area and a branded footer with a caffeine.ai attribution link.",
+  "frontend/src/hooks/useActor.ts": "React hook that creates and caches an ICP backend actor (anonymous or authenticated) using React Query, invalidating dependent queries whenever the actor changes.",
+  "frontend/src/hooks/useInternetIdentity.ts": "Provides an `InternetIdentityProvider` and `useInternetIdentity` hook for managing Internet Identity authentication state, including login, logout, and identity persistence via AuthClient.",
+  "frontend/src/hooks/useQueries.ts": "React Query hooks for all backend operations: creating pairing codes, sending messages, polling messages every 3 seconds, registering recipients, and fetching all pairing codes.",
+  "frontend/src/index.css": "Global CSS file that imports Google Fonts, sets up Tailwind directives, and defines a dark-first OKLCH color palette with custom tokens (neon, electric, surface) plus utility classes for widget text and glow shadows.",
+  "frontend/src/main.tsx": "React app entry point that wraps the App component with TanStack QueryClientProvider and a custom InternetIdentityProvider before mounting to the DOM.",
+  "frontend/src/pages/Home.tsx": "Landing page where users choose to be a Sender (enter a pairing code) or Recipient (generate a pairing code via backend), then navigate to the respective page.",
+  "frontend/src/pages/Recipient.tsx": "Recipient/widget page that registers a pairing code, polls for incoming messages, and renders either plain text or a drawing image payload in a full-screen widget layout.",
+  "frontend/src/pages/Sender.tsx": "Sender page that lets users enter a pairing code and compose either a text message or a freehand drawing (via DrawingCanvas), then send the payload to the paired recipient.",
+  "frontend/tailwind.config.js": "Tailwind CSS configuration extending the theme with OKLCH-based color tokens, custom fonts (Space Grotesk, Inter), border radii, glow box shadows, and animations, with typography, container-queries, and animate plugins.",
+  "project_state.json": "Project state manifest tracking schema version, feature history (sender/recipient pages, theming, drawing canvas, live promotion), architectural notes, and known issues for the remote text widget app."
+}

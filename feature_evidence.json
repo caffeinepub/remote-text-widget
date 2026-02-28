@@ -1,0 +1,42 @@
+{
+  "kind": "feature_evidence_report",
+  "features": [
+    {
+      "featureId": "feature-on-the-sender-page-add-a-drawing-canvas-tab-or-toggle-alongside-the-existing-text-composer-allowing-the-sender-to-sketch-draw-freehand-using-mouse-or-touch-input-the-drawing-should-be-composable-as-an-image-payload-to-send-to-the-paired-recipient-device",
+      "featureTitle": "On the Sender page, add a drawing canvas tab or toggle alongside the existing text composer, allowing the sender to sketch/draw freehand using mouse or touch input. The drawing should be composable as an image payload to send to the paired recipient device.",
+      "files": [
+        "frontend/src/components/DrawingCanvas.tsx",
+        "frontend/src/pages/Sender.tsx"
+      ],
+      "components": [
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-7"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-on-the-recipient-widget-page-detect-whether-the-incoming-message-payload-is-a-drawing-image-data-url-or-plain-text-and-render-it-appropriately-if-it-is-a-drawing-display-it-as-a-full-screen-image-on-the-widget-if-it-is-text-display-it-as-before",
+      "featureTitle": "On the Recipient/Widget page, detect whether the incoming message payload is a drawing (image data URL) or plain text, and render it appropriately. If it is a drawing, display it as a full-screen image on the widget. If it is text, display it as before.",
+      "files": [
+        "frontend/src/pages/Recipient.tsx"
+      ],
+      "components": [
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-8"
+      ],
+      "confidence": "high"
+    }
+  ]
+}

@@ -1,0 +1,103 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --radius: 0.75rem;
+
+    /* Dark-first palette — light mode is a softer dark */
+    --background:       0.12 0.005 260;
+    --foreground:       0.96 0.005 260;
+    --card:             0.16 0.006 260;
+    --card-foreground:  0.96 0.005 260;
+    --popover:          0.18 0.006 260;
+    --popover-foreground: 0.96 0.005 260;
+    --primary:          0.82 0.18 145;
+    --primary-foreground: 0.08 0.005 260;
+    --secondary:        0.22 0.008 260;
+    --secondary-foreground: 0.96 0.005 260;
+    --muted:            0.22 0.008 260;
+    --muted-foreground: 0.55 0.01 260;
+    --accent:           0.22 0.008 260;
+    --accent-foreground: 0.96 0.005 260;
+    --destructive:      0.62 0.22 25;
+    --destructive-foreground: 0.96 0.005 260;
+    --border:           0.28 0.008 260;
+    --input:            0.22 0.008 260;
+    --ring:             0.82 0.18 145;
+
+    /* Custom tokens */
+    --neon:             0.82 0.22 145;
+    --electric:         0.72 0.20 200;
+    --surface:          0.10 0.005 260;
+    --widget-bg:        0.06 0.005 260;
+    --widget-surface:   0.10 0.005 260;
+
+    --chart-1: 0.82 0.22 145;
+    --chart-2: 0.72 0.20 200;
+    --chart-3: 0.75 0.18 55;
+    --chart-4: 0.65 0.22 300;
+    --chart-5: 0.62 0.22 25;
+
+    --sidebar: 0.14 0.006 260;
+    --sidebar-foreground: 0.96 0.005 260;
+    --sidebar-primary: 0.82 0.22 145;
+    --sidebar-primary-foreground: 0.08 0.005 260;
+    --sidebar-accent: 0.22 0.008 260;
+    --sidebar-accent-foreground: 0.96 0.005 260;
+    --sidebar-border: 0.28 0.008 260;
+    --sidebar-ring: 0.82 0.18 145;
+  }
+
+  .dark {
+    --background:       0.10 0.005 260;
+    --foreground:       0.96 0.005 260;
+    --card:             0.14 0.006 260;
+    --card-foreground:  0.96 0.005 260;
+    --popover:          0.16 0.006 260;
+    --popover-foreground: 0.96 0.005 260;
+    --primary:          0.82 0.22 145;
+    --primary-foreground: 0.08 0.005 260;
+    --secondary:        0.20 0.008 260;
+    --secondary-foreground: 0.96 0.005 260;
+    --muted:            0.20 0.008 260;
+    --muted-foreground: 0.52 0.01 260;
+    --accent:           0.20 0.008 260;
+    --accent-foreground: 0.96 0.005 260;
+    --destructive:      0.62 0.22 25;
+    --destructive-foreground: 0.96 0.005 260;
+    --border:           0.25 0.008 260;
+    --input:            0.20 0.008 260;
+    --ring:             0.82 0.22 145;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-surface text-foreground font-sans antialiased;
+    font-family: 'Space Grotesk', 'Inter', system-ui, sans-serif;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Space Grotesk', 'Inter', system-ui, sans-serif;
+    font-weight: 700;
+  }
+}
+
+@layer utilities {
+  .text-widget {
+    font-size: clamp(2rem, 8vw, 6rem);
+    font-family: 'Space Grotesk', 'Inter', system-ui, sans-serif;
+    color: oklch(0.96 0.005 260);
+    text-shadow: 0 0 60px oklch(0.82 0.22 145 / 0.3);
+  }
+
+  .shadow-glow {
+    box-shadow: 0 0 40px oklch(0.82 0.22 145 / 0.15), 0 4px 24px oklch(0 0 0 / 0.4);
+  }
+}

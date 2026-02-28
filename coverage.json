@@ -1,0 +1,61 @@
+{
+  "kind": "coverage_report",
+  "version": "1.0",
+  "generatedAt": "2026-02-28T12:50:37.659Z",
+  "sources": {
+    "buildRequest": true,
+    "implementationPlan": true
+  },
+  "requirements": {
+    "total": 3,
+    "implemented": 2,
+    "items": [
+      {
+        "id": "REQ-7",
+        "summary": "On the Sender page, add a drawing canvas tab or toggle alongside the existing text composer, allowing the sender to sketch/draw freehand using mouse or touch input. The drawing should be composable as an image payload to send to the paired recipient device.",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/src/pages/Sender.tsx",
+          "frontend/src/components/DrawingCanvas.tsx"
+        ],
+        "matchedFiles": [
+          "frontend/src/pages/Sender.tsx",
+          "frontend/src/components/DrawingCanvas.tsx"
+        ]
+      },
+      {
+        "id": "REQ-8",
+        "summary": "On the Recipient/Widget page, detect whether the incoming message payload is a drawing (image data URL) or plain text, and render it appropriately. If it is a drawing, display it as a full-screen image on the widget. If it is text, display it as before.",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/src/pages/Recipient.tsx"
+        ],
+        "matchedFiles": [
+          "frontend/src/pages/Recipient.tsx"
+        ]
+      },
+      {
+        "id": "REQ-9",
+        "summary": "Extend the backend message storage to support larger payloads (base64-encoded image strings) without truncation. Ensure the existing sendMessage and pollMessage functions can handle drawing data URLs in addition to plain text strings.",
+        "status": "unknown",
+        "plannedFiles": [],
+        "matchedFiles": []
+      }
+    ]
+  },
+  "changedFiles": [
+    "backend/main.mo",
+    "backend/migration.mo",
+    "build-request.json",
+    "feature_evidence.json",
+    "frontend-file-summaries.txt",
+    "frontend-implementation-plan.json",
+    "frontend/src/components/DrawingCanvas.tsx",
+    "frontend/src/pages/Recipient.tsx",
+    "frontend/src/pages/Sender.tsx",
+    "project_state.json",
+    "scratch/component-selection.json",
+    "spec.md",
+    "spec_vs_diff_report.json"
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "frontend/src/App.tsx": "Main app entry with TanStack Router setup, defining routes for Home (/), Sender (/sender), and Recipient (/recipient), wrapped in a Layout with a Toaster for notifications.",
+  "frontend/src/components/Layout.tsx": "Shared layout wrapper that provides the dark theme shell, a flexible main content area, and a branded footer with dynamic year and caffeine.ai attribution link.",
+  "frontend/src/hooks/useQueries.ts": "All React Query hooks for backend operations: createPairingCode, sendMessage, pollMessage (with 3s refetch interval), registerRecipient, and getAllPairingCodes.",
+  "frontend/src/pages/Home.tsx": "Landing page with role selection (Sender vs Recipient), pairing code entry for senders, and pairing code generation flow for recipients, with hero image and navigation.",
+  "frontend/src/pages/Sender.tsx": "Sender page with pairing code input, a Text/Draw mode toggle, conditional rendering of either a message textarea or the DrawingCanvas component, and a send button that encodes the active mode's payload (text string or base64 PNG data URL) to the backend.",
+  "frontend/src/pages/Recipient.tsx": "Recipient/widget page that polls for messages every 3 seconds; detects whether the incoming payload is a drawing (data URL) or plain text and renders it as a full-screen `<img>` or large text respectively, preserving the existing dark widget aesthetic.",
+  "frontend/src/index.css": "Global styles with dark OKLCH color system, Space Grotesk font import, custom widget text utility with responsive clamp sizing and glow text-shadow, and neon/electric accent tokens.",
+  "frontend/tailwind.config.js": "Extended Tailwind config with Space Grotesk font family, neon/electric/surface/widget custom color tokens mapped to OKLCH CSS variables, enhanced border radii, and glow box-shadow utilities.",
+  "frontend/index.html": "HTML entry point with full production meta tags including SEO description, Open Graph tags, theme color, and PWA/mobile web app capability meta tags for a native-like experience.",
+  "frontend/src/components/DrawingCanvas.tsx": "A freehand drawing canvas component with mouse and touch support, color swatches, stroke size controls, and a clear button; exposes a ref handle with `getDataURL()` and `isEmpty()` methods for the parent to retrieve the drawing as a PNG data URL."
+}
